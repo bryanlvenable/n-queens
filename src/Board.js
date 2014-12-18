@@ -79,11 +79,38 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      //use index to get row
+      var row = this.get(rowIndex);
+      //create accumulator
+      var accumulator = 0;
+      // use reduce to sum up all values
+      accumulator = _.reduce(row, function(accumulator,value){
+        return accumulator += value;
+      },accumulator);
+
+      // for(var i = 0;i< row.length; i++){
+      //   accumulator+=row[i];
+      // }
+      //return if greater than 1
+      return accumulator > 1;
+
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
+      var length = this.get("n");
+      // initialize a variable called results to false
+      var results = false;
+      // loop through each row calling hasRowConfilctAt
+      for (var i=0; i<length; i++){
+        results = this.hasRowConflictAt(i);
+        if (results){
+          return results;
+        }
+      }
+      // update results to results of hasRowConfilctAt
+      // return if true
+
       return false; // fixme
     },
 
@@ -94,12 +121,36 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      // initialize an accumulator variable to zero
+      var accumulator = 0;
+      var length = this.get("n");
+      // loop over each row
+      for (var i=0; i<length; i++){
+        var row = this.get(i);
+        accumulator += row[colIndex];
+      }
+      return accumulator > 1;
+      // add the value of the column index to accumulator
+      // return if accumulator is greater than one
+      //return false; // fixme
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      // get size of board
+      var length = this.get("n");
+      // initialize results to false
+      var results = false;
+      // loop over summing each column
+      for (var i=0; i<length; i++){
+        results = this.hasColConflictAt(i);
+        if (results){
+          return results;
+        }
+      }
+      // if any column > 1 return true
+      // else return false
+      return false;
     },
 
 
@@ -109,11 +160,64 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      //get size of matrix
+      var length = this.get('n');
+      //initialize an accumulator
+      var accumulator = 0;
+      //loop over diagonal and add value to accumulator
+      // for(var i = colIndex; i < length; i++){
+      //   for(var j = 0; j < length; j++){
+
+      var rowIndex = 0;
+      var colIndex = majorDiagonalColumnIndexAtFirstRow;
+      while(rowIndex < length){
+        if(colIndex < 0 || colIndex > length-1){
+          rowIndex++;
+          colIndex++;
+        }else{
+          var row = this.get(rowIndex);
+          accumulator+=row[colIndex];
+          rowIndex++;
+          colIndex++;
+        }
+      }
+
+      /* Just wanted to get this down so it can be erased on the whiteboard
+      var index = majorDiameterColumnIndexAtFirstRow
+      if (index >= 0){
+        i=0;
+      }
+      if (index < 0){
+        i=-index;
+      }
+      if(index <= 0){
+        j=0;
+      }
+      if(index > 0){
+        j=index;
+      }
+       */
+
+      //return if > 1
+
+      return accumulator > 1; // fixme
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
+      //get matrix size
+      var length = this.get('n');
+      //initialize result to false
+      var results = false;
+      //loop over size starting column at -length
+      for(var i = -length+1;i < length; i++){
+        results = this.hasMajorDiagonalConflictAt(i);
+        if(results){
+          return true;
+        }
+        //return if true
+      }
+      //else return false
       return false; // fixme
     },
 
@@ -124,11 +228,46 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+
+      var length = this.get('n');
+    //initialize an accumulator
+      var accumulator = 0;
+      //loop over diagonal and add value to accumulator
+      // for(var i = colIndex; i < length; i++){
+      //   for(var j = 0; j < length; j++){
+
+      var rowIndex = length-1; // possibly starts at -minorDiagnal....
+      var colIndex = minorDiagonalColumnIndexAtFirstRow; // now going to be larger
+      while(rowIndex >= 0){
+        if(colIndex < 0 || colIndex > length-1){
+          rowIndex--;
+          colIndex++;
+        }else{
+          var row = this.get(rowIndex);
+          accumulator+=row[colIndex];
+          rowIndex--;
+          colIndex++;
+        }
+      }
+
+      return accumulator > 1; // fixme
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
+
+      var length = this.get('n');
+      //initialize result to false
+      var results = false;
+      //loop over size starting column at -length
+      for(var i = -length+1;i < length; i++){
+        results = this.hasMinorDiagonalConflictAt(i);
+        if(results){
+          return true;
+        }
+        //return if true
+      }
+      //else return false
       return false; // fixme
     }
 
