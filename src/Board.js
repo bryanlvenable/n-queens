@@ -236,17 +236,19 @@
       // for(var i = colIndex; i < length; i++){
       //   for(var j = 0; j < length; j++){
 
-      var rowIndex = length-1; // possibly starts at -minorDiagnal....
+      //debugger;
+
+      var rowIndex = 0; // possibly starts at -minorDiagnal....
       var colIndex = minorDiagonalColumnIndexAtFirstRow; // now going to be larger
-      while(rowIndex >= 0){
+      while(rowIndex < length){
         if(colIndex < 0 || colIndex > length-1){
-          rowIndex--;
-          colIndex++;
+          rowIndex++;
+          colIndex--;
         }else{
           var row = this.get(rowIndex);
           accumulator+=row[colIndex];
-          rowIndex--;
-          colIndex++;
+          rowIndex++;
+          colIndex--;
         }
       }
 
@@ -255,12 +257,13 @@
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
+      debugger;
 
       var length = this.get('n');
       //initialize result to false
       var results = false;
       //loop over size starting column at -length
-      for(var i = -length+1;i < length; i++){
+      for(var i = length*2-1;i > -1; i--){
         results = this.hasMinorDiagonalConflictAt(i);
         if(results){
           return true;
